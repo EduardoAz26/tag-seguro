@@ -1,0 +1,210 @@
+<div class="min-h-screen bg-page-bg text-page-text p-6 md:p-12 flex flex-col items-center">
+  <div class="max-w-xl w-full">
+    <!-- Header -->
+    <div class="flex items-center gap-4 mb-8">
+      <button (click)="goBack()" class="p-2 rounded-full hover:bg-page-border transition-colors text-primary flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-accent">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="text-2xl font-extrabold text-primary">Finalizar Compra</h1>
+    </div>
+
+    <!-- Product Summary -->
+    <div class="bg-card-bg p-6 rounded-2xl shadow-sm mb-6 border border-page-border flex gap-4">
+      <div class="w-20 h-20 bg-slate-900 rounded-xl relative shadow-inner flex items-center justify-center border border-slate-700/50">
+        <div class="w-1.5 h-1.5 rounded-full bg-success shadow-[0_0_8px_var(--color-success)] absolute top-2 right-2 animate-pulse"></div>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-slate-500 opacity-60">
+            <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="flex-1">
+        <h2 class="font-bold text-primary text-lg">TagSeguro Rastreador GPS</h2>
+        <p class="text-sm text-page-text-light">Acesso vitalício sem mensalidade</p>
+        <div class="mt-2 font-black text-xl text-primary flex items-center gap-2">
+          @if (paymentMethod() === 'pix') {
+            <span class="text-success">R$ 180,50</span>
+            <span class="text-sm font-medium text-page-text-light line-through">R$ 190,00</span>
+          } @else {
+            R$ 190,00
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (isSuccess()) {
+      <div class="bg-card-bg p-8 md:p-12 rounded-3xl shadow-xl border border-page-border flex flex-col items-center text-center animate-in fade-in zoom-in duration-500 mt-8">
+        <div class="w-24 h-24 bg-success/20 text-success rounded-full flex items-center justify-center mb-6">
+          <mat-icon class="text-6xl w-16 h-16 flex items-center justify-center">check_circle</mat-icon>
+        </div>
+        <h2 class="text-3xl font-extrabold text-primary mb-4 tracking-tight">Pedido Confirmado!</h2>
+        <p class="text-lg text-page-text-light mb-8">
+          Sua compra foi processada com sucesso. Você receberá um e-mail com os detalhes do envio em breve.
+        </p>
+        <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+          <div class="w-full h-full bg-success rounded-full animate-[progress_3s_ease-in-out]"></div>
+        </div>
+        <p class="text-sm text-page-text-light mt-4 font-medium">Redirecionando para a página inicial...</p>
+      </div>
+    } @else {
+      <!-- Form -->
+      <form class="space-y-6" (ngSubmit)="finishCheckout()">
+      <div class="bg-card-bg p-6 rounded-2xl shadow-sm border border-page-border space-y-4">
+        <h3 class="font-bold text-primary mb-2">Dados Pessoais</h3>
+        
+        <div>
+          <label for="name" class="block text-sm font-bold text-primary mb-1">Nome Completo</label>
+          <input id="name" type="text" placeholder="Ex: João da Silva" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" required>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="cpf" class="block text-sm font-bold text-primary mb-1">CPF</label>
+            <input id="cpf" type="text" placeholder="000.000.000-00" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" required>
+          </div>
+          <div>
+            <label for="phone" class="block text-sm font-bold text-primary mb-1">Celular (WhatsApp)</label>
+            <input id="phone" type="tel" placeholder="(11) 90000-0000" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-card-bg p-6 rounded-2xl shadow-sm border border-page-border space-y-4">
+        <h3 class="font-bold text-primary mb-2">Endereço de Entrega</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="cep" class="block text-sm font-bold text-primary mb-1">CEP</label>
+            <input id="cep" type="text" placeholder="00000-000" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" required>
+          </div>
+          <div></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="md:col-span-3">
+            <label for="address" class="block text-sm font-bold text-primary mb-1">Rua / Logradouro</label>
+            <input id="address" type="text" placeholder="Rua Exemplo" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" required>
+          </div>
+          <div>
+            <label for="number" class="block text-sm font-bold text-primary mb-1">Número</label>
+            <input id="number" type="text" placeholder="123" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" required>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="comp" class="block text-sm font-bold text-primary mb-1">Complemento (opcional)</label>
+            <input id="comp" type="text" placeholder="Apto, Bloco..." class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent">
+          </div>
+          <div>
+            <label for="neighborhood" class="block text-sm font-bold text-primary mb-1">Bairro</label>
+            <input id="neighborhood" type="text" placeholder="Centro" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" required>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="md:col-span-3">
+            <label for="city" class="block text-sm font-bold text-primary mb-1">Cidade</label>
+            <input id="city" type="text" placeholder="São Paulo" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" required>
+          </div>
+          <div>
+            <label for="state" class="block text-sm font-bold text-primary mb-1">Estado</label>
+            <input id="state" type="text" placeholder="SP" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" required>
+          </div>
+        </div>
+        
+        <div class="mt-6 pt-4 border-t border-page-border">
+          <h4 class="font-bold text-primary mb-3">Opção de Frete</h4>
+          <label class="flex items-center justify-between p-4 border-2 border-accent bg-accent/5 rounded-xl cursor-pointer">
+            <div class="flex items-center gap-3">
+              <input type="radio" name="shipping" checked class="w-5 h-5 text-accent border-page-border focus:ring-accent focus:ring-2">
+              <div>
+                <div class="font-bold text-primary">Correios - Sedex</div>
+                <div class="text-xs text-page-text-light">Entrega em até 4 dias úteis</div>
+              </div>
+            </div>
+            <div class="font-bold text-success">Grátis</div>
+          </label>
+        </div>
+      </div>
+      
+      <div class="bg-card-bg p-6 rounded-2xl shadow-sm border border-page-border space-y-4">
+        <h3 class="font-bold text-primary mb-2">Pagamento (Seguro)</h3>
+        
+        <!-- Options -->
+        <div class="grid grid-cols-2 gap-4 mb-4">
+            <button type="button" 
+                    (click)="setPaymentMethod('pix')"
+                    [class]="paymentMethod() === 'pix' ? 'border-2 border-success bg-success/10 text-success rounded-xl py-3 font-bold flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform relative overflow-hidden' : 'border border-page-border text-page-text-light rounded-xl py-3 font-semibold flex flex-col items-center justify-center gap-1 hover:bg-page-bg transition-colors relative overflow-visible'">
+                
+                @if (paymentMethod() === 'pix') {
+                  <div class="absolute top-0 inset-x-0 bg-success text-white text-[10px] py-0.5 uppercase tracking-wider text-center">5% de Desconto</div>
+                } @else {
+                  <div class="absolute -top-2 -right-2 bg-success text-white text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm">-5%</div>
+                }
+                
+                <mat-icon [class.mt-3]="paymentMethod() === 'pix'">qr_code_2</mat-icon>
+                PIX
+            </button>
+            <button type="button" 
+                    (click)="setPaymentMethod('card')"
+                    [class]="paymentMethod() === 'card' ? 'border-2 border-primary bg-primary/5 text-primary rounded-xl py-3 font-bold flex flex-col items-center justify-center gap-1 active:scale-95 transition-transform' : 'border border-page-border text-page-text-light rounded-xl py-3 font-semibold flex flex-col items-center justify-center gap-1 hover:bg-page-bg transition-colors'">
+                <mat-icon>credit_card</mat-icon>
+                Cartão
+            </button>
+        </div>
+
+        @if (paymentMethod() === 'card') {
+          <div class="space-y-4 mb-4 animate-in fade-in slide-in-from-top-2">
+            <div>
+              <label for="cardName" class="block text-sm font-bold text-primary mb-1">Nome no Cartão</label>
+              <input id="cardName" type="text" placeholder="Como impresso no cartão" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" [required]="paymentMethod() === 'card'">
+            </div>
+            <div>
+              <label for="cardNumber" class="block text-sm font-bold text-primary mb-1">Número do Cartão</label>
+              <input id="cardNumber" type="text" placeholder="0000 0000 0000 0000" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" [required]="paymentMethod() === 'card'">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="cardExpiry" class="block text-sm font-bold text-primary mb-1">Validade (MM/AA)</label>
+                <input id="cardExpiry" type="text" placeholder="MM/AA" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" [required]="paymentMethod() === 'card'">
+              </div>
+              <div>
+                <label for="cardCvv" class="block text-sm font-bold text-primary mb-1">CVV</label>
+                <input id="cardCvv" type="text" placeholder="123" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent" [required]="paymentMethod() === 'card'">
+              </div>
+            </div>
+            <div>
+              <label for="installments" class="block text-sm font-bold text-primary mb-1">Parcelamento</label>
+              <select id="installments" class="w-full bg-page-bg border border-page-border rounded-xl px-4 py-3 text-primary focus:outline-none focus:ring-2 focus:ring-accent">
+                <option value="1">1x de R$ 190,00 sem juros</option>
+                <option value="2">2x de R$ 95,00 sem juros</option>
+                <option value="3">3x de R$ 63,33 sem juros</option>
+                <option value="4">4x de R$ 47,50 sem juros</option>
+                <option value="5">5x de R$ 38,00 sem juros</option>
+                <option value="6">6x de R$ 31,66 sem juros</option>
+              </select>
+            </div>
+          </div>
+        }
+
+        <div class="text-sm text-center text-page-text-light mb-4">Pagamento aprovado na hora.</div>
+      </div>
+
+      <button type="submit" [class.opacity-90]="isProcessing()" [class.pointer-events-none]="isProcessing()" class="w-full text-center bg-[#25D366] text-white py-4 rounded-xl font-extrabold text-lg shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300 uppercase tracking-wide focus:outline-none focus:ring-4 focus:ring-[#25D366]/50 relative flex items-center justify-center">
+        <span [class.opacity-0]="isProcessing()">Concluir Compra via {{ paymentMethod() === 'pix' ? 'PIX' : 'Cartão' }}</span>
+        @if (isProcessing()) {
+          <div class="absolute inset-0 flex items-center justify-center">
+            <svg class="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+        }
+      </button>
+
+      <div class="text-center text-xs text-page-text-light mt-4 flex items-center justify-center gap-1">
+        <mat-icon class="text-[16px] w-[16px] h-[16px] text-success">lock</mat-icon> Ambiente 100% seguro.
+      </div>
+    </form>
+    }
+  </div>
+</div>

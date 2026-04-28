@@ -1,0 +1,50 @@
+/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: var(--color-primary);
+  --color-accent: var(--color-accent);
+  --color-success: var(--color-success);
+  --color-page-bg: var(--color-page-bg);
+  --color-page-border: var(--color-page-border);
+  --color-page-text: var(--color-page-text);
+  --color-page-text-light: var(--color-page-text-light);
+  --color-card-bg: var(--color-card-bg);
+}
+
+:root {
+  --color-primary: #0f172a;
+  --color-accent: #ea580c;
+  --color-success: #16a34a;
+  --color-page-bg: #f8fafc;
+  --color-page-border: #e2e8f0;
+  --color-page-text: #1e293b;
+  --color-page-text-light: #64748b;
+  --color-card-bg: #ffffff;
+}
+
+.dark {
+  --color-primary: #f8fafc;
+  --color-accent: #f97316;
+  --color-success: #22c55e;
+  --color-page-bg: #0f172a;
+  --color-page-border: #1e293b;
+  --color-page-text: #f1f5f9;
+  --color-page-text-light: #94a3b8;
+  --color-card-bg: #1e293b;
+}
+
+body {
+  @apply bg-page-bg text-page-text font-sans antialiased transition-colors duration-300;
+}
+
+@keyframes progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes mapMove {
+  from { background-position: 0 0; }
+  to { background-position: -40px 40px; }
+}
